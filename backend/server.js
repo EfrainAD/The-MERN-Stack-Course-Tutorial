@@ -5,7 +5,7 @@ const MONGO_URI = process.env.MONGO_URI
 const express = require('express')
 const mongoose = require('mongoose')
 
-const Task = require('./model/taskModel')
+const Task = require('./models/taskModel')
 const taskRouter = require('./routes/task-routes')
 
 const app = express()
