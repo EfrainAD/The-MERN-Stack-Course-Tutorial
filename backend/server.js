@@ -6,32 +6,16 @@ const express = require('express')
 const mongoose = require('mongoose')
 
 const Task = require('./model/taskModel')
+const taskRouter = require('./routes/task-routes')
 
 const app = express()
 
 // Middleware
 app.use(express.json())
+app.use(taskRouter)
 
 app.get('/', (req, res) => {
      res.send('<h1>This server is running</h1>')
-})
-
-app.post('/api/tasks', async (req, res) => {
-     try {
-          const task = await Task.create(req.body)
-          res.status(200).json(task)
-     } catch (error) {
-          res.status(500).json({message: error.message})
-     }
-})
-
-app.get('/api/tasks', async (re, res) => {
-     try {
-          const task = await Task.find()
-          res.status(200).json(task)
-     } catch (error) {
-          res.status(500).json({message: error.message})
-     }
 })
 
 mongoose.connect(MONGO_URI)
