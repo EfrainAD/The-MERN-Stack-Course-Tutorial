@@ -10,6 +10,11 @@ app.get('/', (req, res) => {
      res.send('<h1>This server is running</h1>')
 })
 
+app.post('/api/tasks', (req, res) => {
+     console.log('req.body', req.body)
+     res.send('Task Created')
+})
+
 mongoose.connect(MONGO_URI)
      .then(
           app.listen(PORT, () => {
