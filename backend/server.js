@@ -25,6 +25,15 @@ app.post('/api/tasks', async (req, res) => {
      }
 })
 
+app.get('/api/tasks', async (re, res) => {
+     try {
+          const task = await Task.find()
+          res.status(200).json(task)
+     } catch (error) {
+          res.status(500).json({message: error.message})
+     }
+})
+
 mongoose.connect(MONGO_URI)
      .then(
           app.listen(PORT, () => {
