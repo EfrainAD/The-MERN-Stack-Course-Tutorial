@@ -19,8 +19,8 @@ const getAllTask = async (req, res) => {
 }
 
 const getTask = async (req, res) => {
-     const {id} = req.params
      try {
+          const {id} = req.params
           const task = await Task.findById(id)
           if (!task) return res.status(404).json(`404 - task not found Id:${id}`)
           res.status(200).json(task)
@@ -29,9 +29,19 @@ const getTask = async (req, res) => {
      }
 }
 
-const deleteTask = async (req, res) => {
-     const {id} = req.params
+const updateTask = async (req, res) => {
      try {
+          const {id} = req.params
+          const task = await Task.findOneAndUpdate({_id: id}, req.body, {new: true, runValidators: true})
+          if (!task) return res.status(404).json(`404 - task not found Id:${id}`)
+          res.status(200).json(task)
+     } catch (error) {
+          res.status(500).json({message: error.message})
+     }
+}
+const deleteTask = async (req, res) => {
+     try {
+          const {id} = req.params
           const task = await Task.deleteOne({'_id': id})
           if (!task) return res.status(404).json(`404 - task not found Id:${id}`)
           res.status(200).json(task)
@@ -46,5 +56,6 @@ module.exports = {
      createTask,
      getAllTask,
      getTask,
+     updateTask,
      deleteTask,
 }
