@@ -21,8 +21,12 @@
   },
   "homepage": "https://github.com/EfrainAD/The-MERN-Stack-Course-Tutorial#readme",
   "dependencies": {
+    "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "mongoose": "^6.8.1"
+  },
+  "devDependencies": {
+    "concurrently": "^7.6.0"
   }
 }
