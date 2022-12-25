@@ -12,7 +12,7 @@ const app = express()
 
 // Middleware
 app.use(express.json())
-app.use(taskRouter)
+app.use('/api/tasks',taskRouter)
 
 app.get('/', (req, res) => {
      res.send('<h1>This server is running</h1>')
