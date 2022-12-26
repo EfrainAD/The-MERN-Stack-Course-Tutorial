@@ -80,7 +80,15 @@ const TaskList = () => {
                toast.error(error.message)
           }
      }
-     
+     const markCompleted = async (task) => {
+          try {
+               await axios.put(`${URL}/api/tasks/${task._id}`, {...task, completed: true} )
+               getTasks()
+               toast.success('Marked Complete!')
+          } catch (error) {
+               toast.error(error.message)
+          }
+     }
      return (
           <div>
                <h2>Task Manager</h2>
@@ -114,8 +122,11 @@ const TaskList = () => {
                          <>
                               {tasks.map((task, index) => 
                                    <Task 
-                                        key={task._id} task={task} index={index + 1} 
+                                        key={task._id} 
+                                        task={task} 
+                                        index={index + 1} 
                                         deleteTask={deleteTask} getSingleTask={getSingleTask}
+                                        markCompleted={markCompleted}
                                    />)}
                          </>
                     )
