@@ -46,6 +46,11 @@ const TaskList = () => {
        getTasks()
      }, [])
      
+     useEffect(() => {
+          setCompletedTask(tasks.filter(task => task.completed))
+     }, [tasks])
+     
+
      const createTask = async (e) => {
           e.preventDefault()
 
@@ -105,7 +110,7 @@ const TaskList = () => {
                               <b>Totle Task:</b> {tasks.length}
                          </p>
                          <p>
-                              <b>Completed Task:</b> {tasks.filter(task => task.completed).length}
+                              <b>Completed Task:</b> {completedTask.length}
                          </p>
                     </div>
                )}
