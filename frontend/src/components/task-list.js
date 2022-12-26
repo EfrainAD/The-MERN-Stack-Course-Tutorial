@@ -2,19 +2,22 @@ import Task from "./task"
 import TaskForm from "./task-form"
 import { URL } from '../App'
 import { useEffect, useState } from "react"
-import axios from 'axios'
+import axios, { Axios } from 'axios'
 import { toast } from "react-toastify"
 import loadingImage from '../assets/loader.gif'
 
 const TaskList = () => {
-     const [taskData, setTaskData] = useState('')
+     const [formData, setFormData] = useState({name: '', completed: false})
+     const name = formData.name
      const [tasks, setTasks] = useState([])
      const [completedTask, setCompletedTask] = useState([])
      const [isLoading, setIsLoading] = useState(false)
+     const [isEditing, setIsEditing] = useState(false)
+     const [taskId, setTaskId] = useState('')
 
      const handleInputChange = (e) => {
           const {name, value} = e.target
-          setTaskData({...taskData, [name]: value})
+          setFormData({...formData, [name]: value})
      }
 
      const getTasks = async () => {
@@ -43,23 +46,51 @@ const TaskList = () => {
        getTasks()
      }, [])
      
-
      const createTask = async (e) => {
           e.preventDefault()
-          if (taskData === '') return toast.error('Can not send an empty to-do')
+
+          if (name === '') return toast.error('Can not have an empty to-do')
+
           try {
-               await axios.post(`${URL}/api/tasks`, taskData)
+               await axios.post(`${URL}/api/tasks`, formData)
+               setFormData({name: '', completed: false})
+               getTasks()
                toast.success('Task has been added')
-               setTaskData('')
           } catch (error) {
                toast.error(error.message)
           }
      }
-     // name={name} onChange={} value={name} /
+
+     const getSingleTask = (task) => {
+          setFormData({name: task.name, completed: false})
+          setTaskId(task._id)
+          setIsEditing(true)
+     }
+     const updateTask = async (e) => {
+          e.preventDefault()
+          if (name === '') return toast.error('Can not have an empty to-do')
+          try {
+               await axios.put(`${URL}/api/tasks/${taskId}`, formData)
+               setFormData({name: '', completed: false})
+               setTaskId('')
+               setIsEditing(false)
+               getTasks()
+               toast.success('Edit Successful')
+          } catch (error) {
+               toast.error(error.message)
+          }
+     }
+     
      return (
           <div>
                <h2>Task Manager</h2>
-               <TaskForm createTask={createTask} handleInputChange={handleInputChange} />
+               <TaskForm 
+                    createTask={createTask}
+                    name={name}
+                    handleInputChange={handleInputChange}
+                    isEditing={isEditing}
+                    updateTask={updateTask}
+               />
                <div className="--flex-between --pd">
                     <p>
                          <b>Totle Task:</b> 0
@@ -81,11 +112,14 @@ const TaskList = () => {
                          <p className="--py">You have no tasks</p>
                     ):(
                          <>
-                              {tasks.map((task, index) => <Task key={task._id} task={task} index={index + 1} deleteTask={deleteTask} />)}
+                              {tasks.map((task, index) => 
+                                   <Task 
+                                        key={task._id} task={task} index={index + 1} 
+                                        deleteTask={deleteTask} getSingleTask={getSingleTask}
+                                   />)}
                          </>
                     )
                }
-               {/* <Task /> */}
           </div>
      )
 }
