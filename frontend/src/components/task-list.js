@@ -99,14 +99,16 @@ const TaskList = () => {
                     isEditing={isEditing}
                     updateTask={updateTask}
                />
-               <div className="--flex-between --pd">
-                    <p>
-                         <b>Totle Task:</b> 0
-                    </p>
-                    <p>
-                         <b>Completed Task:</b> 0
-                    </p>
-               </div>
+               {tasks.length && (
+                    <div className="--flex-between --pd">
+                         <p>
+                              <b>Totle Task:</b> {tasks.length}
+                         </p>
+                         <p>
+                              <b>Completed Task:</b> {tasks.filter(task => task.completed).length}
+                         </p>
+                    </div>
+               )}
                <hr />
                {
                     isLoading && (
