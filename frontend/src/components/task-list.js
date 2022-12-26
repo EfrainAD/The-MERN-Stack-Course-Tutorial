@@ -28,6 +28,17 @@ const TaskList = () => {
                setIsLoading(false)
           }
      }
+
+     const deleteTask = async (id) => {
+          try {
+               await axios.delete(`${URL}/api/tasks/${id}`)
+               toast.success('Task has been deleted')
+               getTasks()
+          } catch (error) {
+               toast.error(error.message)
+          }
+     }
+
      useEffect(() => {
        getTasks()
      }, [])
@@ -70,7 +81,7 @@ const TaskList = () => {
                          <p className="--py">You have no tasks</p>
                     ):(
                          <>
-                              {tasks.map((task, index) => <Task key={task._id} task={task} index={index + 1} />)}
+                              {tasks.map((task, index) => <Task key={task._id} task={task} index={index + 1} deleteTask={deleteTask} />)}
                          </>
                     )
                }

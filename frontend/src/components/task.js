@@ -1,6 +1,7 @@
 import { FaEdit, FaCheckDouble, FaRegTrashAlt } from 'react-icons/fa'
 
-const Task = ({task, index}) => {
+const Task = ({task, index, deleteTask}) => {
+     const handleDelete = () => deleteTask(task._id)
      return (
           <div className="task">
                <p>
@@ -10,7 +11,7 @@ const Task = ({task, index}) => {
                <div className="task-icons">
                     <FaCheckDouble color='green' />
                     <FaEdit color='purple' />
-                    <FaRegTrashAlt color='red' />
+                    <FaRegTrashAlt color='red' onClick={handleDelete} />
                </div>
           </div>
      )
